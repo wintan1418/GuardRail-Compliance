@@ -39,20 +39,32 @@
 
         <!-- User Menu -->
         <div class="relative" data-controller="dropdown">
-          <button data-action="click->dropdown#toggle" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors">
+          <button type="button" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors" data-action="click->dropdown#toggle">
             <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-sm font-semibold text-emerald-700">
               <%= current_user.first_name[0] %><%= current_user.last_name[0] %>
             </div>
             <span class="hidden md:block text-sm font-medium text-slate-700"><%= current_user.first_name %></span>
             <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
           </button>
-          <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-slate-200 py-2 z-50">
+          <div class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-slate-200 py-2 z-50" data-dropdown-target="menu">
             <div class="px-4 py-2 border-b border-slate-100">
               <p class="font-medium text-slate-900"><%= current_user.full_name %></p>
               <p class="text-sm text-slate-500"><%= current_user.email %></p>
             </div>
-            <%= link_to 'Settings', settings_notifications_path, class: 'block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50' %>
-            <%= link_to 'Sign Out', destroy_user_session_path, data: { turbo_method: :delete }, class: 'block px-4 py-2 text-sm text-red-600 hover:bg-red-50' %>
+            <%= link_to team_path(current_user), class: 'block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50' do %>
+              My Profile
+            <% end %>
+            <%= link_to edit_user_registration_path, class: 'block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50' do %>
+              Edit Profile
+            <% end %>
+            <%= link_to settings_notifications_path, class: 'block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50' do %>
+              Settings
+            <% end %>
+            <div class="border-t border-slate-100 mt-1 pt-1">
+              <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: 'block px-4 py-2 text-sm text-red-600 hover:bg-red-50' do %>
+                Sign Out
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
