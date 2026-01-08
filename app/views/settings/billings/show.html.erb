@@ -78,18 +78,20 @@
         </div>
 
         <div class="flex gap-3">
-          <button class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-colors">
+          <%= link_to pricing_path, class: 'px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-colors' do %>
             Upgrade Plan
-          </button>
-          <button class="px-4 py-2 border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-lg font-medium transition-colors">
-            Manage Billing
-          </button>
+          <% end %>
+          <% if @organization.stripe_customer_id.present? %>
+            <%= link_to billing_portal_path, class: 'px-4 py-2 border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-lg font-medium transition-colors' do %>
+              Manage Billing
+            <% end %>
+          <% end %>
         </div>
       <% else %>
         <p class="text-slate-500 mb-4">You don't have an active subscription.</p>
-        <button class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-colors">
+        <%= link_to pricing_path, class: 'inline-block px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-colors' do %>
           Choose a Plan
-        </button>
+        <% end %>
       <% end %>
     </div>
 

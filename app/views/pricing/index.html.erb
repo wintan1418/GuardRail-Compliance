@@ -1,0 +1,89 @@
+<div class="min-h-screen bg-slate-50">
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="/" class="flex items-center gap-2 text-xl font-bold text-slate-900">
+        <span class="w-9 h-9 bg-emerald-500 rounded-lg flex items-center justify-center text-white font-bold">G</span>
+        GuardRail
+      </a>
+      <div class="flex items-center gap-4">
+        <% if user_signed_in? %>
+          <%= link_to 'Dashboard', dashboard_path, class: 'text-slate-600 hover:text-slate-900 font-medium' %>
+        <% else %>
+          <%= link_to 'Log In', new_user_session_path, class: 'text-slate-600 hover:text-slate-900 font-medium' %>
+          <%= link_to 'Get Started', new_user_registration_path, class: 'bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-lg font-semibold transition-all' %>
+        <% end %>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-5xl mx-auto px-6 py-16">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-slate-900 mb-4">Simple, Transparent Pricing</h1>
+      <p class="text-lg text-slate-500">Choose the plan that fits your practice. All plans include a 14-day free trial.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <% @plans.each_with_index do |plan, index| %>
+        <div class="bg-white rounded-2xl border-2 <%= index == 1 ? 'border-emerald-500 shadow-xl relative' : 'border-slate-200' %> p-8">
+          <% if index == 1 %>
+            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+              <span class="bg-emerald-500 text-white px-4 py-1 rounded-full text-sm font-semibold">Most Popular</span>
+            </div>
+          <% end %>
+          
+          <h3 class="text-xl font-bold text-slate-900 mb-2"><%= plan.name %></h3>
+          <p class="text-slate-500 text-sm mb-6"><%= plan.description %></p>
+          
+          <div class="mb-6">
+            <span class="text-4xl font-bold text-slate-900">$<%= plan.price_in_dollars.to_i %></span>
+            <span class="text-slate-500">/<%= plan.interval %></span>
+          </div>
+
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-2 text-sm text-slate-600">
+              <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Up to <%= plan.max_users || 'Unlimited' %> team members
+            </li>
+            <li class="flex items-center gap-2 text-sm text-slate-600">
+              <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Up to <%= plan.max_documents || 'Unlimited' %> documents
+            </li>
+            <li class="flex items-center gap-2 text-sm text-slate-600">
+              <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Email reminders
+            </li>
+            <% if plan.sms_enabled? %>
+              <li class="flex items-center gap-2 text-sm text-slate-600">
+                <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                SMS notifications
+              </li>
+            <% end %>
+            <% if plan.slack_enabled? %>
+              <li class="flex items-center gap-2 text-sm text-slate-600">
+                <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Slack integration
+              </li>
+            <% end %>
+            <li class="flex items-center gap-2 text-sm text-slate-600">
+              <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Audit reports
+            </li>
+          </ul>
+
+          <% if user_signed_in? %>
+            <%= button_to 'Choose Plan', checkout_path(plan_id: plan.id), method: :post, class: "w-full py-3 rounded-lg font-semibold transition-all #{index == 1 ? 'bg-emerald-500 hover:bg-emerald-600 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-900'}" %>
+          <% else %>
+            <%= link_to 'Start Free Trial', new_user_registration_path, class: "block text-center w-full py-3 rounded-lg font-semibold transition-all #{index == 1 ? 'bg-emerald-500 hover:bg-emerald-600 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-900'}" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-12 text-center">
+      <p class="text-slate-500">
+        All plans include a <strong>14-day free trial</strong>. No credit card required to start.
+      </p>
+    </div>
+  </div>
+</div>

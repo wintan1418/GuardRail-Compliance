@@ -54,6 +54,11 @@ Rails.application.routes.draw do
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # Pricing & Billing
+  get 'pricing', to: 'pricing#index'
+  post 'checkout', to: 'checkouts#create'
+  get 'billing_portal', to: 'checkouts#billing_portal'
+
   # Stripe webhooks
-  post 'webhooks/stripe', to: 'webhooks#stripe'
+  post 'webhooks/stripe', to: 'stripe_webhooks#create'
 end
