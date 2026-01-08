@@ -1,0 +1,100 @@
+<div class="dashboard">
+  <header class="dashboard-header">
+    <h1>Dashboard</h1>
+    <%= link_to 'Upload Document', new_document_path, class: 'btn btn-primary' %>
+  </header>
+
+  <div class="dashboard-grid">
+    <!-- Health Score Card -->
+    <div class="card health-score-card">
+      <div class="health-score">
+        <div class="score-circle <%= @health_score >= 80 ? 'success' : @health_score >= 50 ? 'warning' : 'danger' %>">
+          <span class="score-value"><%= @health_score %></span>
+        </div>
+        <div class="score-label">
+          <strong>Compliance Score</strong>
+          <span><%= @health_score >= 80 ? 'Good Standing' : @health_score >= 50 ? 'Needs Attention' : 'Action Required' %></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-icon">📄</span>
+        <div class="stat-content">
+          <span class="stat-value"><%= @total_documents %></span>
+          <span class="stat-label">Total Documents</span>
+        </div>
+      </div>
+      <div class="stat-card warning">
+        <span class="stat-icon">⚠️</span>
+        <div class="stat-content">
+          <span class="stat-value"><%= @expiring_soon_count %></span>
+          <span class="stat-label">Expiring Soon</span>
+        </div>
+      </div>
+      <div class="stat-card danger">
+        <span class="stat-icon">🔴</span>
+        <div class="stat-content">
+          <span class="stat-value"><%= @expired_count %></span>
+          <span class="stat-label">Expired</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">👥</span>
+        <div class="stat-content">
+          <span class="stat-value"><%= @team_count %></span>
+          <span class="stat-label">Team Members</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Urgent Items -->
+  <div class="card">
+    <div class="card-header">
+      <h2>🔺 Next 30 Days - Urgent Items</h2>
+      <%= link_to 'View All', documents_path(status: 'expiring'), class: 'btn-link' %>
+    </div>
+    <div class="urgent-list">
+      <% if @urgent_documents.any? %>
+        <% @urgent_documents.each do |doc| %>
+          <div class="urgent-item">
+            <div class="urgent-left">
+              <span class="status-badge <%= doc.status_color %>">
+                <%= doc.days_until_expiry <= 7 ? '🔴' : '⚠️' %>
+              </span>
+              <%= link_to doc.name, document_path(doc), class: 'urgent-name' %>
+            </div>
+            <div class="urgent-right">
+              <span class="urgent-date">Expires: <%= doc.expiration_date.strftime('%b %d, %Y') %></span>
+              <span class="urgent-days"><%= doc.days_until_expiry %> days</span>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="empty-state">
+          <span>🎉</span>
+          <p>No urgent items! All documents are compliant.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="card">
+    <div class="card-header">
+      <h2>Recent Activity</h2>
+    </div>
+    <div class="activity-list">
+      <% @recent_activity.each do |log| %>
+        <div class="activity-item">
+          <span class="activity-action"><%= log.action.humanize %></span>
+          <span class="activity-user"><%= log.user&.full_name || 'System' %></span>
+          <span class="activity-time"><%= time_ago_in_words(log.created_at) %> ago</span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

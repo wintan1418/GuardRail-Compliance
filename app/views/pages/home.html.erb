@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GuardRail - Compliance Management for Medical & Legal Practices</title>
+  <style>
+    :root {
+      --color-primary: #1E293B;
+      --color-primary-light: #334155;
+      --color-success: #10B981;
+      --color-white: #FFFFFF;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      min-height: 100vh;
+      color: var(--color-white);
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    header {
+      padding: 1.5rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-white);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--color-success);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    nav a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      margin-left: 2rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--color-white); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--color-success);
+      color: var(--color-white);
+    }
+    .btn-primary:hover {
+      background: #059669;
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--color-white);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .hero {
+      padding: 6rem 0;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 span { color: var(--color-success); }
+    .hero p {
+      font-size: 1.25rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    .hero-buttons { display: flex; gap: 1rem; justify-content: center; }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      padding: 4rem 0;
+    }
+    .feature {
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--color-success);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    .feature h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    .feature p { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
+    @media (max-width: 768px) {
+      .features { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="/" class="logo">
+        <span class="logo-icon">🛡️</span>
+        GuardRail
+      </a>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <%= link_to 'Sign In', new_user_session_path %>
+        <%= link_to 'Get Started', new_user_registration_path, class: 'btn btn-primary' %>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>Never Miss a <span>Compliance Deadline</span> Again</h1>
+      <p>GuardRail keeps your medical practice or law firm compliant with automated tracking, smart reminders, and one-click audit reports.</p>
+      <div class="hero-buttons">
+        <%= link_to 'Start Free Trial', new_user_registration_path, class: 'btn btn-primary' %>
+        <a href="#features" class="btn btn-secondary">Learn More</a>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <div class="feature">
+        <div class="feature-icon">🔒</div>
+        <h3>Compliance Vault</h3>
+        <p>Secure storage for HIPAA BAAs, state licenses, insurance policies, and certifications with PDF preview.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⏰</div>
+        <h3>Smart Reminders</h3>
+        <p>Multi-channel alerts via Email, SMS, and Slack at 90, 60, 30, and 7-day intervals before any deadline.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📋</div>
+        <h3>Audit-Ready Reports</h3>
+        <p>Generate one-click compliance reports to prove to inspectors that all staff certifications are current.</p>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
