@@ -140,7 +140,6 @@
       <h3 class="font-semibold text-slate-900 mb-4">Account</h3>
       <div class="text-sm text-slate-500 space-y-1">
         <p>Joined: <%= @user.created_at.strftime('%B %d, %Y') %></p>
-        <p>Last sign in: <%= @user.last_sign_in_at&.strftime('%B %d, %Y at %I:%M %p') || 'Never' %></p>
       </div>
     </div>
   </div>
