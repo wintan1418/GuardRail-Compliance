@@ -3,24 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GuardRail - Automated Compliance Management for Medical & Law Firms. Never miss a deadline again.">
   <title>GuardRail - Compliance Management for Medical & Legal Practices</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --color-primary: #1E293B;
-      --color-primary-light: #334155;
-      --color-success: #10B981;
+      --color-accent: #10B981;
+      --color-accent-dark: #059669;
+      --color-bg: #F8FAFC;
       --color-white: #FFFFFF;
+      --color-gray-100: #F1F5F9;
+      --color-gray-200: #E2E8F0;
+      --color-gray-500: #64748B;
+      --color-gray-700: #334155;
+      --color-gray-900: #0F172A;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-      min-height: 100vh;
-      color: var(--color-white);
+      background: var(--color-bg);
+      color: var(--color-gray-900);
+      line-height: 1.6;
     }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    
+    /* Header */
     header {
-      padding: 1.5rem 0;
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-gray-200);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -28,140 +45,493 @@
     .logo {
       font-size: 1.5rem;
       font-weight: 700;
-      color: var(--color-white);
+      color: var(--color-gray-900);
       text-decoration: none;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
     .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: var(--color-success);
-      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      background: var(--color-accent);
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
+      color: white;
+      font-weight: 700;
     }
+    nav { display: flex; align-items: center; gap: 2rem; }
     nav a {
-      color: rgba(255,255,255,0.8);
+      color: var(--color-gray-700);
       text-decoration: none;
-      margin-left: 2rem;
+      font-weight: 500;
+      font-size: 0.95rem;
       transition: color 0.2s;
     }
-    nav a:hover { color: var(--color-white); }
+    nav a:hover { color: var(--color-gray-900); }
+    .nav-cta {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    
+    /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       padding: 0.75rem 1.5rem;
       border-radius: 8px;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 0.95rem;
       text-decoration: none;
       transition: all 0.2s;
+      border: none;
+      cursor: pointer;
     }
     .btn-primary {
-      background: var(--color-success);
+      background: var(--color-accent);
       color: var(--color-white);
     }
     .btn-primary:hover {
-      background: #059669;
-      transform: translateY(-2px);
+      background: var(--color-accent-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
     .btn-secondary {
-      background: transparent;
-      color: var(--color-white);
-      border: 1px solid rgba(255,255,255,0.3);
+      background: var(--color-white);
+      color: var(--color-gray-900);
+      border: 1px solid var(--color-gray-200);
     }
+    .btn-secondary:hover {
+      border-color: var(--color-gray-300);
+      background: var(--color-gray-100);
+    }
+    
+    /* Hero Section */
     .hero {
-      padding: 6rem 0;
-      text-align: center;
-    }
-    .hero h1 {
-      font-size: 3.5rem;
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 1.5rem;
-    }
-    .hero h1 span { color: var(--color-success); }
-    .hero p {
-      font-size: 1.25rem;
-      color: rgba(255,255,255,0.7);
-      max-width: 600px;
-      margin: 0 auto 2rem;
-    }
-    .hero-buttons { display: flex; gap: 1rem; justify-content: center; }
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
+      background: var(--color-white);
       padding: 4rem 0;
     }
-    .feature {
-      background: rgba(255,255,255,0.05);
-      border-radius: 16px;
-      padding: 2rem;
-      border: 1px solid rgba(255,255,255,0.1);
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
     }
-    .feature-icon {
+    .hero-content h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      color: var(--color-gray-900);
+    }
+    .hero-content p {
+      font-size: 1.125rem;
+      color: var(--color-gray-500);
+      margin-bottom: 2rem;
+    }
+    .hero-buttons { display: flex; gap: 1rem; align-items: center; }
+    .watch-demo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--color-gray-700);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .play-icon {
       width: 48px;
       height: 48px;
-      background: var(--color-success);
-      border-radius: 12px;
-      margin-bottom: 1rem;
+      background: var(--color-gray-900);
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
+      color: white;
+    }
+    .hero-image {
+      position: relative;
+      background: linear-gradient(135deg, #E0F2F1 0%, #B2DFDB 100%);
+      border-radius: 20px;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-image-placeholder {
+      font-size: 6rem;
+      opacity: 0.5;
+    }
+    .compliance-badge {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      width: 60px;
+      height: 60px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+    }
+    
+    /* Problem/Solution Section */
+    .problem-solution {
+      padding: 5rem 0;
+    }
+    .ps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+    }
+    .problem h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--color-gray-900);
+    }
+    .problem-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      align-items: flex-start;
+    }
+    .problem-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--color-gray-100);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .problem-text h4 {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    .problem-text p {
+      color: var(--color-gray-500);
+      font-size: 0.9rem;
+    }
+    .solution h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--color-accent);
+    }
+    .solution-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .solution-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-200);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .solution-card-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #E0F2F1 0%, #B2DFDB 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
       font-size: 1.5rem;
     }
-    .feature h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
-    .feature p { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
-    @media (max-width: 768px) {
-      .features { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 2.5rem; }
+    .solution-card h4 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .solution-card p {
+      color: var(--color-gray-500);
+      font-size: 0.875rem;
+    }
+    
+    /* CTA Section */
+    .cta-section {
+      padding: 3rem 0;
+    }
+    .cta-inner {
+      background: linear-gradient(135deg, var(--color-primary) 0%, #334155 100%);
+      border-radius: 24px;
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .cta-content h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-white);
+      margin-bottom: 1.5rem;
+    }
+    .cta-buttons { display: flex; flex-direction: column; gap: 0.75rem; }
+    .cta-buttons .btn-primary { width: fit-content; }
+    .cta-buttons a:not(.btn) { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
+    .testimonial-card {
+      background: var(--color-white);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      gap: 1rem;
+    }
+    .testimonial-avatar {
+      width: 48px;
+      height: 48px;
+      background: var(--color-gray-200);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .testimonial-content h4 { font-weight: 600; margin-bottom: 0.25rem; }
+    .testimonial-content .role { color: var(--color-gray-500); font-size: 0.875rem; margin-bottom: 0.75rem; }
+    .testimonial-content .quote { font-style: italic; color: var(--color-gray-700); font-size: 0.95rem; }
+    .report-card {
+      background: var(--color-white);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .report-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--color-accent);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    .report-content h4 { font-weight: 600; margin-bottom: 0.25rem; }
+    .report-content p { color: var(--color-gray-500); font-size: 0.875rem; }
+    
+    /* Footer */
+    footer {
+      background: var(--color-white);
+      border-top: 1px solid var(--color-gray-200);
+      padding: 3rem 0 2rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) auto;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .footer-col h4 {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--color-gray-900);
+    }
+    .footer-col a {
+      display: block;
+      color: var(--color-gray-500);
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--color-gray-900); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--color-gray-200);
+      color: var(--color-gray-500);
+      font-size: 0.875rem;
+    }
+    .social-links { display: flex; gap: 1rem; }
+    .social-links a {
+      width: 36px;
+      height: 36px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-decoration: none;
+    }
+    
+    @media (max-width: 968px) {
+      .hero-inner, .ps-grid, .cta-inner { grid-template-columns: 1fr; }
+      .hero-content h1 { font-size: 2.25rem; }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .solution-cards { grid-template-columns: 1fr; }
+      nav { display: none; }
+      .footer-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
+  <!-- Header -->
+  <header>
+    <div class="container header-inner">
       <a href="/" class="logo">
-        <span class="logo-icon">🛡️</span>
+        <span class="logo-icon">G</span>
         GuardRail
       </a>
       <nav>
         <a href="#features">Features</a>
         <a href="#pricing">Pricing</a>
-        <%= link_to 'Sign In', new_user_session_path %>
-        <%= link_to 'Get Started', new_user_registration_path, class: 'btn btn-primary' %>
+        <a href="#testimonials">Testimonials</a>
       </nav>
-    </header>
+      <div class="nav-cta">
+        <%= link_to 'Log In', new_user_session_path %>
+        <%= link_to 'Book A Demo', new_user_registration_path, class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </header>
 
-    <section class="hero">
-      <h1>Never Miss a <span>Compliance Deadline</span> Again</h1>
-      <p>GuardRail keeps your medical practice or law firm compliant with automated tracking, smart reminders, and one-click audit reports.</p>
-      <div class="hero-buttons">
-        <%= link_to 'Start Free Trial', new_user_registration_path, class: 'btn btn-primary' %>
-        <a href="#features" class="btn btn-secondary">Learn More</a>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-content">
+        <h1>Never Miss a Deadline Again. Protect Your Practice</h1>
+        <p>Automated Compliance for Medical & Law Firms</p>
+        <div class="hero-buttons">
+          <%= link_to 'Get Started Free', new_user_registration_path, class: 'btn btn-primary' %>
+          <a href="#demo" class="watch-demo">
+            <span class="play-icon">▶</span>
+            Watch 2-Min Demo
+          </a>
+        </div>
       </div>
-    </section>
+      <div class="hero-image">
+        <div class="hero-image-placeholder">👩‍⚕️</div>
+        <div class="compliance-badge">✓</div>
+      </div>
+    </div>
+  </section>
 
-    <section class="features" id="features">
-      <div class="feature">
-        <div class="feature-icon">🔒</div>
-        <h3>Compliance Vault</h3>
-        <p>Secure storage for HIPAA BAAs, state licenses, insurance policies, and certifications with PDF preview.</p>
+  <!-- Problem / Solution Section -->
+  <section class="problem-solution" id="features">
+    <div class="container ps-grid">
+      <div class="problem">
+        <h3>Manual Tracking is Risky</h3>
+        <div class="problem-item">
+          <div class="problem-icon">📊</div>
+          <div class="problem-text">
+            <h4>Spreadsheet Chaos</h4>
+            <p>Spreadsheets get out of date fast</p>
+          </div>
+        </div>
+        <div class="problem-item">
+          <div class="problem-icon">💸</div>
+          <div class="problem-text">
+            <h4>Steep Fines (up to $10k+)</h4>
+            <p>Lost Peace of Mind</p>
+          </div>
+        </div>
       </div>
-      <div class="feature">
-        <div class="feature-icon">⏰</div>
-        <h3>Smart Reminders</h3>
-        <p>Multi-channel alerts via Email, SMS, and Slack at 90, 60, 30, and 7-day intervals before any deadline.</p>
+      <div class="solution">
+        <h3>GuardRail: Your Shield</h3>
+        <div class="solution-cards">
+          <div class="solution-card">
+            <div class="solution-card-icon">⏰</div>
+            <h4>Smart Reminders</h4>
+            <p>Multi-channel alerts weeks in advance</p>
+          </div>
+          <div class="solution-card">
+            <div class="solution-card-icon">🔒</div>
+            <h4>Secure Document Vault</h4>
+            <p>Encrypted compliance for all, one click</p>
+          </div>
+        </div>
       </div>
-      <div class="feature">
-        <div class="feature-icon">📋</div>
-        <h3>Audit-Ready Reports</h3>
-        <p>Generate one-click compliance reports to prove to inspectors that all staff certifications are current.</p>
+    </div>
+  </section>
+
+  <!-- CTA Section with Testimonial -->
+  <section class="cta-section" id="testimonials">
+    <div class="container">
+      <div class="cta-inner">
+        <div class="cta-content">
+          <h2>Join Hundreds of Compliant Practices</h2>
+          <div class="cta-buttons">
+            <%= link_to 'Start Your Free Trial', new_user_registration_path, class: 'btn btn-primary' %>
+            <a href="#contact">Schedule a Call</a>
+          </div>
+        </div>
+        <div>
+          <div class="testimonial-card" style="margin-bottom: 1rem;">
+            <div class="testimonial-avatar">👩‍⚕️</div>
+            <div class="testimonial-content">
+              <h4>Dr. Emily Chen</h4>
+              <div class="role">Clinic Owner</div>
+            </div>
+          </div>
+          <div class="report-card">
+            <div class="report-icon">📋</div>
+            <div class="report-content">
+              <h4>Instant Audit Reports</h4>
+              <p>"GuardRail saved us from a potential fine! It's indispensable."</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#">Features</a>
+          <a href="#">Pricing</a>
+          <a href="#">Integrations</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About Us</a>
+          <a href="#">Careers</a>
+          <a href="#">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="#">Help Center</a>
+          <a href="#">Blog</a>
+          <a href="#">API Docs</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">HIPAA Compliance</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 GuardRail Compliance</span>
+        <div class="social-links">
+          <a href="#">𝕏</a>
+          <a href="#">in</a>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
