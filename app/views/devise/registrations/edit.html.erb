@@ -1,43 +1,126 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<div class="min-h-screen bg-slate-50">
+  <%= render 'shared/header' %>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <div class="max-w-2xl mx-auto px-6 py-8">
+    <div class="mb-6">
+      <%= link_to dashboard_path, class: 'inline-flex items-center gap-2 text-slate-600 hover:text-slate-900' do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        Back to Dashboard
+      <% end %>
+    </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+    <h1 class="text-2xl font-bold text-slate-900 mb-6">Edit Profile</h1>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'space-y-6' }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
+      <!-- Personal Information -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6">
+        <h3 class="font-semibold text-slate-900 mb-4">Personal Information</h3>
+        
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">First Name</label>
+            <%= f.text_field :first_name, class: 'w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500' %>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Last Name</label>
+            <%= f.text_field :last_name, class: 'w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500' %>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500' %>
+          <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+            <p class="mt-1 text-sm text-amber-600">Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
+          <% end %>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-slate-700 mb-1">Phone</label>
+          <%= f.telephone_field :phone, class: 'w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500', placeholder: '+1 (555) 123-4567' %>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Title</label>
+          <%= f.text_field :title, class: 'w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500', placeholder: 'e.g., Office Manager, MD, Practice Owner' %>
+        </div>
+      </div>
+
+      <!-- License Information -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6">
+        <h3 class="font-semibold text-slate-900 mb-4">License Information</h3>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">License Number</label>
+            <%= f.text_field :license_number, class: 'w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500', placeholder: 'e.g., MD-123456' %>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">License Expiration</label>
+            <%= f.date_field :license_expiration, class: 'w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500' %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notification Preferences -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6">
+        <h3 class="font-semibold text-slate-900 mb-4">Notification Preferences</h3>
+        
+        <div class="space-y-3">
+          <label class="flex items-center gap-3 cursor-pointer">
+            <%= f.check_box :email_notifications, class: 'w-5 h-5 text-emerald-600 border-slate-300 rounded focus:ring-emerald-500' %>
+            <span class="text-slate-700">Receive email notifications</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer">
+            <%= f.check_box :sms_notifications, class: 'w-5 h-5 text-emerald-600 border-slate-300 rounded focus:ring-emerald-500' %>
+            <span class="text-slate-700">Receive SMS notifications</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Change Password -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6">
+        <h3 class="font-semibold text-slate-900 mb-4">Change Password</h3>
+        <p class="text-sm text-slate-500 mb-4">Leave blank if you don't want to change your password</p>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">New Password</label>
+            <%= f.password_field :password, autocomplete: "new-password", class: 'w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500' %>
+            <% if @minimum_password_length %>
+              <p class="mt-1 text-xs text-slate-500">Minimum <%= @minimum_password_length %> characters</p>
+            <% end %>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Confirm New Password</label>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500' %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Password Required -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6">
+        <h3 class="font-semibold text-slate-900 mb-2">Confirm Changes</h3>
+        <p class="text-sm text-slate-500 mb-4">Enter your current password to save changes</p>
+        
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Current Password <span class="text-red-500">*</span></label>
+          <%= f.password_field :current_password, autocomplete: "current-password", class: 'w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500' %>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <%= f.submit "Save Changes", class: 'px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-semibold transition-colors cursor-pointer' %>
+      </div>
     <% end %>
+
+    <!-- Danger Zone -->
+    <div class="mt-8 bg-white rounded-xl border border-red-200 p-6">
+      <h3 class="font-semibold text-red-700 mb-2">Danger Zone</h3>
+      <p class="text-sm text-slate-600 mb-4">Once you delete your account, there is no going back.</p>
+      <%= button_to "Delete My Account", registration_path(resource_name), method: :delete, class: 'px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors', data: { turbo_confirm: 'Are you sure you want to delete your account? This action cannot be undone.' } %>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<%= link_to "Back", :back %>
+</div>

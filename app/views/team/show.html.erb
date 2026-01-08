@@ -1,0 +1,147 @@
+<div class="min-h-screen bg-slate-50">
+  <%= render 'shared/header' %>
+
+  <div class="max-w-4xl mx-auto px-6 py-8">
+    <div class="mb-6">
+      <%= link_to team_index_path, class: 'inline-flex items-center gap-2 text-slate-600 hover:text-slate-900' do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        Back to Team
+      <% end %>
+    </div>
+
+    <!-- Profile Header -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-8 mb-6">
+      <div class="flex items-start justify-between">
+        <div class="flex items-center gap-6">
+          <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center text-2xl font-semibold text-emerald-700">
+            <%= @user.first_name[0] %><%= @user.last_name[0] %>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900"><%= @user.full_name %></h1>
+            <p class="text-slate-500"><%= @user.email %></p>
+            <div class="flex items-center gap-2 mt-2">
+              <% case @user.role %>
+              <% when 'owner' %>
+                <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">Owner</span>
+              <% when 'admin' %>
+                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">Admin</span>
+              <% else %>
+                <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium">Staff</span>
+              <% end %>
+              <% if @user.title.present? %>
+                <span class="text-slate-500"><%= @user.title %></span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <% if @user == current_user %>
+          <%= link_to edit_user_registration_path, class: 'px-4 py-2 border border-slate-200 rounded-lg text-slate-700 hover:bg-slate-50 font-medium transition-colors' do %>
+            Edit Profile
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Contact Info -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6">
+        <h3 class="font-semibold text-slate-900 mb-4">Contact Information</h3>
+        <div class="space-y-3">
+          <div>
+            <label class="text-xs font-medium text-slate-500 uppercase tracking-wider">Email</label>
+            <p class="text-slate-900"><%= @user.email %></p>
+          </div>
+          <% if @user.phone.present? %>
+            <div>
+              <label class="text-xs font-medium text-slate-500 uppercase tracking-wider">Phone</label>
+              <p class="text-slate-900"><%= @user.phone %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- License Info -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6">
+        <h3 class="font-semibold text-slate-900 mb-4">License Information</h3>
+        <div class="space-y-3">
+          <% if @user.license_number.present? %>
+            <div>
+              <label class="text-xs font-medium text-slate-500 uppercase tracking-wider">License Number</label>
+              <p class="text-slate-900"><%= @user.license_number %></p>
+            </div>
+          <% end %>
+          <% if @user.license_expiration.present? %>
+            <div>
+              <label class="text-xs font-medium text-slate-500 uppercase tracking-wider">Expires</label>
+              <p class="<%= @user.license_expired? ? 'text-red-600 font-medium' : @user.license_expiring_soon? ? 'text-amber-600' : 'text-slate-900' %>">
+                <%= @user.license_expiration.strftime('%B %d, %Y') %>
+                <% if @user.license_expired? %>
+                  <span class="ml-2 px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs">EXPIRED</span>
+                <% elsif @user.license_expiring_soon? %>
+                  <span class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-xs">EXPIRING SOON</span>
+                <% end %>
+              </p>
+            </div>
+          <% end %>
+          <% if @user.license_number.blank? && @user.license_expiration.blank? %>
+            <p class="text-slate-500 text-sm">No license information on file</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Documents -->
+    <div class="mt-6 bg-white rounded-2xl border border-slate-200 p-6">
+      <h3 class="font-semibold text-slate-900 mb-4">Documents</h3>
+      
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Uploaded Documents -->
+        <div>
+          <h4 class="text-sm font-medium text-slate-500 mb-3">Uploaded (<%= @user.uploaded_documents.count %>)</h4>
+          <% if @uploaded_documents.any? %>
+            <div class="space-y-2">
+              <% @uploaded_documents.each do |doc| %>
+                <%= link_to document_path(doc), class: 'block p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors' do %>
+                  <div class="font-medium text-slate-900 text-sm"><%= doc.name %></div>
+                  <div class="text-xs text-slate-500"><%= doc.created_at.strftime('%b %d, %Y') %></div>
+                <% end %>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-slate-400 text-sm">No documents uploaded</p>
+          <% end %>
+        </div>
+
+        <!-- Assigned Documents -->
+        <div>
+          <h4 class="text-sm font-medium text-slate-500 mb-3">Assigned (<%= @user.assigned_documents.count %>)</h4>
+          <% if @assigned_documents.any? %>
+            <div class="space-y-2">
+              <% @assigned_documents.each do |doc| %>
+                <%= link_to document_path(doc), class: 'block p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors' do %>
+                  <div class="font-medium text-slate-900 text-sm"><%= doc.name %></div>
+                  <% if doc.expiration_date %>
+                    <div class="text-xs <%= doc.expired? ? 'text-red-600' : doc.expiring_soon? ? 'text-amber-600' : 'text-slate-500' %>">
+                      Expires: <%= doc.expiration_date.strftime('%b %d, %Y') %>
+                    </div>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-slate-400 text-sm">No documents assigned</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity -->
+    <div class="mt-6 bg-white rounded-2xl border border-slate-200 p-6">
+      <h3 class="font-semibold text-slate-900 mb-4">Account</h3>
+      <div class="text-sm text-slate-500 space-y-1">
+        <p>Joined: <%= @user.created_at.strftime('%B %d, %Y') %></p>
+        <p>Last sign in: <%= @user.last_sign_in_at&.strftime('%B %d, %Y at %I:%M %p') || 'Never' %></p>
+      </div>
+    </div>
+  </div>
+</div>
