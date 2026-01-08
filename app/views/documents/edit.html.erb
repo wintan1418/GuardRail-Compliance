@@ -1,0 +1,18 @@
+<div class="min-h-screen bg-slate-50">
+  <%= render 'shared/header' %>
+
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <div class="mb-6">
+      <%= link_to @document, class: 'inline-flex items-center gap-2 text-slate-600 hover:text-slate-900' do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        Back to Document
+      <% end %>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-slate-200 p-8">
+      <h1 class="text-2xl font-bold text-slate-900 mb-6">Edit Document</h1>
+      
+      <%= render 'form', document: @document %>
+    </div>
+  </div>
+</div>

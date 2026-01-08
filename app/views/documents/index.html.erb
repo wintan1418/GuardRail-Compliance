@@ -1,0 +1,161 @@
+<div class="min-h-screen bg-slate-50">
+  <!-- Header -->
+  <%= render 'shared/header' %>
+
+  <div class="max-w-7xl mx-auto px-6 py-8">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-2xl font-bold text-slate-900">Documents</h1>
+      <%= link_to new_document_path, class: 'flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-lg font-semibold transition-all' do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        Upload Document
+      <% end %>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-xl border border-slate-200 p-4 mb-6">
+      <%= form_with url: documents_path, method: :get, class: 'flex flex-wrap gap-4 items-end', data: { turbo_frame: '_top' } do |f| %>
+        <div class="flex-1 min-w-[200px]">
+          <label class="block text-sm font-medium text-slate-700 mb-1">Search</label>
+          <input type="text" name="search" value="<%= params[:search] %>" placeholder="Search documents..." 
+            class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+        </div>
+        <div class="w-40">
+          <label class="block text-sm font-medium text-slate-700 mb-1">Status</label>
+          <select name="status" class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500">
+            <option value="">All Status</option>
+            <option value="active" <%= 'selected' if params[:status] == 'active' %>>Active</option>
+            <option value="expiring_soon" <%= 'selected' if params[:status] == 'expiring_soon' %>>Expiring Soon</option>
+            <option value="expired" <%= 'selected' if params[:status] == 'expired' %>>Expired</option>
+            <option value="archived" <%= 'selected' if params[:status] == 'archived' %>>Archived</option>
+          </select>
+        </div>
+        <div class="w-48">
+          <label class="block text-sm font-medium text-slate-700 mb-1">Category</label>
+          <select name="category" class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500">
+            <option value="">All Categories</option>
+            <% @categories.each do |cat| %>
+              <option value="<%= cat.id %>" <%= 'selected' if params[:category] == cat.id.to_s %>><%= cat.name %></option>
+            <% end %>
+          </select>
+        </div>
+        <div class="w-48">
+          <label class="block text-sm font-medium text-slate-700 mb-1">Assigned To</label>
+          <select name="assigned_to" class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500">
+            <option value="">All Team</option>
+            <% @team_members.each do |user| %>
+              <option value="<%= user.id %>" <%= 'selected' if params[:assigned_to] == user.id.to_s %>><%= user.full_name %></option>
+            <% end %>
+          </select>
+        </div>
+        <button type="submit" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition-colors">
+          Filter
+        </button>
+        <% if params[:search].present? || params[:status].present? || params[:category].present? || params[:assigned_to].present? %>
+          <%= link_to 'Clear', documents_path, class: 'px-4 py-2 text-slate-500 hover:text-slate-700' %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <!-- Documents Table -->
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+      <table class="w-full">
+        <thead class="bg-slate-50 border-b border-slate-200">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Document</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Category</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Assigned To</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Expiration</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <% @documents.each do |document| %>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                  </div>
+                  <div>
+                    <%= link_to document.name, document, class: 'font-medium text-slate-900 hover:text-emerald-600' %>
+                    <% if document.reference_number.present? %>
+                      <div class="text-xs text-slate-500">#<%= document.reference_number %></div>
+                    <% end %>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <% if document.compliance_category %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style="background-color: <%= document.compliance_category.color %>20; color: <%= document.compliance_category.color %>">
+                    <%= document.compliance_category.name %>
+                  </span>
+                <% else %>
+                  <span class="text-slate-400">—</span>
+                <% end %>
+              </td>
+              <td class="px-6 py-4">
+                <% if document.assigned_to %>
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 bg-slate-200 rounded-full flex items-center justify-center text-xs font-medium text-slate-600">
+                      <%= document.assigned_to.first_name[0] %><%= document.assigned_to.last_name[0] %>
+                    </div>
+                    <span class="text-sm text-slate-700"><%= document.assigned_to.full_name %></span>
+                  </div>
+                <% else %>
+                  <span class="text-slate-400">Unassigned</span>
+                <% end %>
+              </td>
+              <td class="px-6 py-4">
+                <% if document.expiration_date %>
+                  <div class="text-sm text-slate-900"><%= document.expiration_date.strftime('%b %d, %Y') %></div>
+                  <% if document.days_until_expiry && document.days_until_expiry > 0 %>
+                    <div class="text-xs text-slate-500"><%= document.days_until_expiry %> days</div>
+                  <% end %>
+                <% else %>
+                  <span class="text-slate-400">No expiration</span>
+                <% end %>
+              </td>
+              <td class="px-6 py-4">
+                <% case document.status %>
+                <% when 'active' %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Compliant</span>
+                <% when 'expiring_soon' %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">Expiring Soon</span>
+                <% when 'expired' %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">Expired</span>
+                <% when 'archived' %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700">Archived</span>
+                <% end %>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <div class="flex items-center justify-end gap-2">
+                  <%= link_to document, class: 'p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors', title: 'View' do %>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  <% end %>
+                  <%= link_to edit_document_path(document), class: 'p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors', title: 'Edit' do %>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                  <% end %>
+                  <% if document.file.attached? %>
+                    <%= link_to download_document_path(document), class: 'p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors', title: 'Download' do %>
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    <% end %>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+          <% if @documents.empty? %>
+            <tr>
+              <td colspan="6" class="px-6 py-12 text-center">
+                <svg class="w-12 h-12 text-slate-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <p class="text-slate-500">No documents found</p>
+                <%= link_to 'Upload your first document', new_document_path, class: 'text-emerald-600 hover:text-emerald-700 font-medium' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
