@@ -1,0 +1,24 @@
+# Sidekiq Scheduler Configuration
+# Run SendRemindersJob daily at 9 AM
+# and weekly digest every Monday at 8 AM
+
+:schedule:
+  send_reminders:
+    cron: '0 9 * * *'  # Every day at 9:00 AM
+    class: SendRemindersJob
+    description: "Send due expiration reminders via email, SMS, and Slack"
+
+  weekly_digest:
+    cron: '0 8 * * 1'  # Every Monday at 8:00 AM
+    class: WeeklyDigestJob
+    description: "Send weekly compliance summary to all users"
+
+  update_document_status:
+    cron: '0 1 * * *'  # Every day at 1:00 AM
+    class: UpdateDocumentStatusJob
+    description: "Update document status based on expiration dates"
+
+  health_score_update:
+    cron: '0 2 * * *'  # Every day at 2:00 AM
+    class: UpdateHealthScoresJob
+    description: "Recalculate organization health scores"

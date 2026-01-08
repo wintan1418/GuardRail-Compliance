@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #334155; margin: 0; padding: 0; background-color: #f8fafc; }
+    .wrapper { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .card { background: white; border-radius: 16px; padding: 32px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .logo { text-align: center; margin-bottom: 24px; }
+    .logo span { display: inline-flex; align-items: center; gap: 8px; font-size: 24px; font-weight: 700; color: #0f172a; }
+    .logo-icon { width: 36px; height: 36px; background: #10b981; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
+    .alert { padding: 16px; border-radius: 12px; margin-bottom: 24px; }
+    .alert-danger { background: #fef2f2; border: 1px solid #fecaca; }
+    .alert-warning { background: #fffbeb; border: 1px solid #fde68a; }
+    .alert-info { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .alert h2 { margin: 0 0 8px 0; font-size: 18px; }
+    .alert-danger h2 { color: #dc2626; }
+    .alert-warning h2 { color: #d97706; }
+    .alert-info h2 { color: #059669; }
+    .document-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+    .document-name { font-size: 20px; font-weight: 600; color: #0f172a; margin: 0 0 12px 0; }
+    .details { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .detail-item { }
+    .detail-label { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .detail-value { color: #0f172a; font-weight: 500; }
+    .btn { display: inline-block; padding: 12px 24px; background: #10b981; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 16px; }
+    .btn:hover { background: #059669; }
+    .footer { text-align: center; margin-top: 32px; color: #94a3b8; font-size: 14px; }
+    .footer a { color: #10b981; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="card">
+      <div class="logo">
+        <span><span class="logo-icon">G</span> GuardRail</span>
+      </div>
+
+      <% alert_class = @days_until_expiry <= 0 ? 'danger' : (@days_until_expiry <= 7 ? 'warning' : 'info') %>
+      <div class="alert alert-<%= alert_class %>">
+        <h2>
+          <% if @days_until_expiry <= 0 %>
+            🚨 Document Expired
+          <% elsif @days_until_expiry <= 7 %>
+            ⚠️ Urgent: Expires in <%= @days_until_expiry %> Days
+          <% elsif @days_until_expiry <= 30 %>
+            📋 Reminder: Expires in <%= @days_until_expiry %> Days
+          <% else %>
+            📅 Upcoming Expiration
+          <% end %>
+        </h2>
+        <p style="margin: 0; color: #64748b;">
+          <% if @days_until_expiry <= 0 %>
+            This document has expired and requires immediate attention.
+          <% else %>
+            Please renew or update this document before it expires.
+          <% end %>
+        </p>
+      </div>
+
+      <div class="document-card">
+        <h3 class="document-name"><%= @document.name %></h3>
+        <div class="details">
+          <div class="detail-item">
+            <div class="detail-label">Expiration Date</div>
+            <div class="detail-value"><%= @document.expiration_date.strftime('%B %d, %Y') %></div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Category</div>
+            <div class="detail-value"><%= @document.compliance_category&.name || 'Uncategorized' %></div>
+          </div>
+          <% if @document.issuing_authority.present? %>
+            <div class="detail-item">
+              <div class="detail-label">Issuing Authority</div>
+              <div class="detail-value"><%= @document.issuing_authority %></div>
+            </div>
+          <% end %>
+          <% if @document.reference_number.present? %>
+            <div class="detail-item">
+              <div class="detail-label">Reference #</div>
+              <div class="detail-value"><%= @document.reference_number %></div>
+            </div>
+          <% end %>
+        </div>
+
+        <a href="<%= document_url(@document) %>" class="btn">View Document →</a>
+      </div>
+
+      <p style="color: #64748b; font-size: 14px;">
+        Hi <%= @user.first_name %>,<br><br>
+        This is an automated reminder from GuardRail Compliance. 
+        <% if @reminder.escalation_level > 0 %>
+          <strong>This reminder has been escalated because it was not acknowledged.</strong>
+        <% end %>
+      </p>
+
+      <div class="footer">
+        <p><%= @organization.name %></p>
+        <p>
+          <a href="#">Manage notification preferences</a> · 
+          <a href="#">View all documents</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

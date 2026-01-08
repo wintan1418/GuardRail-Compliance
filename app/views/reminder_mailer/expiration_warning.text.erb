@@ -1,0 +1,29 @@
+<% if @days_until_expiry <= 0 %>
+🚨 DOCUMENT EXPIRED: <%= @document.name %>
+<% elsif @days_until_expiry <= 7 %>
+⚠️ URGENT: <%= @document.name %> expires in <%= @days_until_expiry %> days
+<% else %>
+📋 REMINDER: <%= @document.name %> expires in <%= @days_until_expiry %> days
+<% end %>
+
+Hi <%= @user.first_name %>,
+
+This is an automated reminder from GuardRail Compliance.
+
+DOCUMENT DETAILS
+----------------
+Name: <%= @document.name %>
+Expiration Date: <%= @document.expiration_date.strftime('%B %d, %Y') %>
+Category: <%= @document.compliance_category&.name || 'Uncategorized' %>
+<% if @document.issuing_authority.present? %>Issuing Authority: <%= @document.issuing_authority %><% end %>
+<% if @document.reference_number.present? %>Reference #: <%= @document.reference_number %><% end %>
+
+<% if @reminder.escalation_level > 0 %>
+⚡ This reminder has been escalated because it was not acknowledged.
+<% end %>
+
+View this document: <%= document_url(@document) %>
+
+--
+<%= @organization.name %>
+Powered by GuardRail Compliance
