@@ -1,0 +1,125 @@
+<div class="min-h-screen bg-slate-50">
+  <%= render 'shared/header' %>
+
+  <div class="max-w-4xl mx-auto px-6 py-8">
+    <!-- Settings Navigation -->
+    <div class="flex gap-4 mb-8 border-b border-slate-200 pb-4">
+      <%= link_to settings_notifications_path, class: "px-4 py-2 rounded-lg font-medium #{controller.controller_name == 'notifications' ? 'bg-emerald-100 text-emerald-700' : 'text-slate-600 hover:bg-slate-100'}" do %>
+        Notifications
+      <% end %>
+      <% if current_user.admin? %>
+        <%= link_to settings_organization_path, class: "px-4 py-2 rounded-lg font-medium #{controller.controller_name == 'organizations' ? 'bg-emerald-100 text-emerald-700' : 'text-slate-600 hover:bg-slate-100'}" do %>
+          Organization
+        <% end %>
+      <% end %>
+      <% if current_user.owner? %>
+        <%= link_to settings_billing_path, class: "px-4 py-2 rounded-lg font-medium #{controller.controller_name == 'billings' ? 'bg-emerald-100 text-emerald-700' : 'text-slate-600 hover:bg-slate-100'}" do %>
+          Billing
+        <% end %>
+      <% end %>
+    </div>
+
+    <h1 class="text-2xl font-bold text-slate-900 mb-6">Billing & Subscription</h1>
+
+    <!-- Current Plan -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
+      <div class="flex justify-between items-start mb-4">
+        <div>
+          <h3 class="font-semibold text-slate-900">Current Plan</h3>
+          <p class="text-sm text-slate-500">Manage your subscription</p>
+        </div>
+        <% if @subscription&.trialing? %>
+          <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+            Trial - <%= @subscription.trial_days_remaining %> days left
+          </span>
+        <% elsif @subscription&.active? %>
+          <span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">Active</span>
+        <% else %>
+          <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium">
+            <%= @subscription&.status&.titleize || 'No Subscription' %>
+          </span>
+        <% end %>
+      </div>
+
+      <% if @plan %>
+        <div class="flex items-baseline gap-2 mb-4">
+          <span class="text-4xl font-bold text-slate-900">$<%= @plan.price_in_dollars.to_i %></span>
+          <span class="text-slate-500">/<%= @plan.interval %></span>
+        </div>
+
+        <div class="bg-slate-50 rounded-xl p-4 mb-4">
+          <h4 class="font-medium text-slate-900 mb-2"><%= @plan.name %> Plan Includes:</h4>
+          <ul class="space-y-2 text-sm text-slate-600">
+            <li class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Up to <%= @plan.max_users || 'Unlimited' %> team members
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Up to <%= @plan.max_documents || 'Unlimited' %> documents
+            </li>
+            <li class="flex items-center gap-2">
+              <% if @plan.sms_enabled? %>
+                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <% else %>
+                <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <% end %>
+              SMS notifications
+            </li>
+            <li class="flex items-center gap-2">
+              <% if @plan.slack_enabled? %>
+                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <% else %>
+                <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <% end %>
+              Slack integration
+            </li>
+          </ul>
+        </div>
+
+        <div class="flex gap-3">
+          <button class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-colors">
+            Upgrade Plan
+          </button>
+          <button class="px-4 py-2 border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-lg font-medium transition-colors">
+            Manage Billing
+          </button>
+        </div>
+      <% else %>
+        <p class="text-slate-500 mb-4">You don't have an active subscription.</p>
+        <button class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-colors">
+          Choose a Plan
+        </button>
+      <% end %>
+    </div>
+
+    <!-- Usage -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-6">
+      <h3 class="font-semibold text-slate-900 mb-4">Usage</h3>
+      
+      <div class="space-y-4">
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-600">Team Members</span>
+            <span class="font-medium text-slate-900"><%= @organization.users.count %> / <%= @plan&.max_users || '∞' %></span>
+          </div>
+          <div class="w-full bg-slate-200 rounded-full h-2">
+            <% usage = @plan&.max_users ? (@organization.users.count.to_f / @plan.max_users * 100).round : 10 %>
+            <div class="bg-emerald-500 h-2 rounded-full" style="width: <%= [usage, 100].min %>%"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-600">Documents</span>
+            <span class="font-medium text-slate-900"><%= @organization.documents.count %> / <%= @plan&.max_documents || '∞' %></span>
+          </div>
+          <div class="w-full bg-slate-200 rounded-full h-2">
+            <% usage = @plan&.max_documents ? (@organization.documents.count.to_f / @plan.max_documents * 100).round : 10 %>
+            <div class="bg-emerald-500 h-2 rounded-full" style="width: <%= [usage, 100].min %>%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
