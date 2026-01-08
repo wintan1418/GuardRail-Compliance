@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  organization: one
+  email_enabled: false
+  email_from_name: MyString
+  sms_enabled: false
+  twilio_phone_number: MyString
+  slack_enabled: false
+  slack_webhook_url: MyString
+  slack_channel: MyString
+  escalation_enabled: false
+  escalation_after_days: 1
+
+two:
+  organization: two
+  email_enabled: false
+  email_from_name: MyString
+  sms_enabled: false
+  twilio_phone_number: MyString
+  slack_enabled: false
+  slack_webhook_url: MyString
+  slack_channel: MyString
+  escalation_enabled: false
+  escalation_after_days: 1

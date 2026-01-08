@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  document: one
+  user: one
+  scheduled_at: 2026-01-08 17:25:10
+  sent_at: 2026-01-08 17:25:10
+  channel: MyString
+  status: MyString
+  days_before_expiry: 1
+  escalation_level: 1
+
+two:
+  document: two
+  user: two
+  scheduled_at: 2026-01-08 17:25:10
+  sent_at: 2026-01-08 17:25:10
+  channel: MyString
+  status: MyString
+  days_before_expiry: 1
+  escalation_level: 1

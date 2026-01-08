@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  stripe_price_id: MyString
+  price_cents: 1
+  interval: MyString
+  max_users: 1
+  max_documents: 1
+  sms_enabled: false
+  slack_enabled: false
+  features: 
+
+two:
+  name: MyString
+  stripe_price_id: MyString
+  price_cents: 1
+  interval: MyString
+  max_users: 1
+  max_documents: 1
+  sms_enabled: false
+  slack_enabled: false
+  features: 

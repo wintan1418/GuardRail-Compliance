@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  organization: one
+  compliance_category: one
+  name: MyString
+  description: MyText
+  issue_date: 2026-01-08
+  expiration_date: 2026-01-08
+  status: MyString
+  document_type: MyString
+  issuing_authority: MyString
+  reference_number: MyString
+  auto_remind: false
+
+two:
+  organization: two
+  compliance_category: two
+  name: MyString
+  description: MyText
+  issue_date: 2026-01-08
+  expiration_date: 2026-01-08
+  status: MyString
+  document_type: MyString
+  issuing_authority: MyString
+  reference_number: MyString
+  auto_remind: false
